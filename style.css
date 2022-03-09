@@ -168,6 +168,10 @@ p {
   overflow: hidden;
   position: absolute;
 
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
   background: rgb(102, 79, 79, 0.8);
   box-shadow: 0 0 1rem 0.1rem rgb(73, 153, 122), inset 0 0 1rem 0.1rem rgb(37, 247, 166);
 }
@@ -180,12 +184,14 @@ p {
 
 .topline {
   text-align: right;
+  align-self: flex-end;
 }
 
 .botline {
   top: 0.2rem;
   font-size: 6rem;
   text-align: right; 
+  align-self: flex-end;
 }
 
 .calculator-screen,

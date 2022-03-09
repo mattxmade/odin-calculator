@@ -52,7 +52,7 @@ const displayOperator = document.getElementById('js-operator');
 const inputs = document.querySelectorAll('.keypad');
 const operators = document.querySelectorAll('.js-op');
 
-let lastOperator = '';
+let lastOperator = 'none';
 
 let codeArray = [];
 let inputCapture = [];
@@ -163,7 +163,7 @@ function enableOutput() {
 function resetCalculator() {
   inputCapture = [];
   codeArray = [];
-  lastOperator = '';
+  lastOperator = 'none';
   displayOutput.textContent = '';
 
   topLiner.textContent = '';
@@ -186,21 +186,17 @@ function displayInput(action = 'input', input) {
       displayOutput.textContent = '';
     }
 
-    // what if user wants to use answer in next sum???
-    if (lastOperator === '=') {
-      codeArray[1] += input;
-    }
+    switch(lastOperator) {
+      case '=':
+        codeArray[1] += input;
+        break;
 
-    if (lastOperator !== '') {
+      case 'none':
+        topLiner.textContent = 0;
+        break;  
+    }    
 
-      displayOutput.textContent += input;
-
-    }
-    else {
-      displayOutput.textContent += input;
-      topLiner.textContent = 0;
-    }
-    
+    displayOutput.textContent += input;
     lastType = 'number';
   }
 
@@ -213,7 +209,7 @@ function displayInput(action = 'input', input) {
       topLiner.appendChild(displayOperator); 
     }
 
-    if (lastOperator === '') {
+    if (lastOperator === 'none') {
       topLiner.textContent = '';
     }
 

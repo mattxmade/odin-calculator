@@ -172,8 +172,6 @@ function resetCalculator() {
   lastType = '';
 }
 
-let pressCount = 0;
-
 function displayInput(action = 'input', input) {
 
   if (action === 'input') {

@@ -1,6 +1,7 @@
-keyGenerator(10);
+// generate keypads
+generateKeypads(10);
 
-function keyGenerator(number) {
+function generateKeypads(number) {
   const grid = document.getElementById('grid');
   
 
@@ -41,10 +42,8 @@ function keyGenerator(number) {
   }
 }
 
-// 12 + 7 - 5 * 3 = should yield 42
-
-const topLiner = document.querySelector('.topline');
-topLiner.style.visibility = 'hidden';
+const topLine = document.querySelector('.topline');
+topLine.style.visibility = 'hidden';
 
 const displayOutput = document.querySelector('.botline');
 const displayOperator = document.getElementById('js-operator');
@@ -52,47 +51,41 @@ const displayOperator = document.getElementById('js-operator');
 const inputs = document.querySelectorAll('.keypad');
 const operators = document.querySelectorAll('.js-op');
 
-let lastOperator = 'none';
-
-let codeArray = [];
-let inputCapture = [];
+const codeArray = [];
+const inputCapture = [];
 
 let result = 0;
+let initalise = true;
 let returnResult = false;
 
-let initalizer = true;
+let lastAction;
+let lastOperator = 'none';
 
+// clear calculator
 const clearButton = document.querySelector('.js-c');
+
 clearButton.addEventListener('click', () => {
-
   resetCalculator();
-
 });
 
-let lastType;
-
+// backspace
 function backspaceHandler() {
-  if (lastType === 'number') {
+  if (lastAction === 'number') {
 
     inputCapture.pop();
     displayOutput.textContent = inputCapture.join("");
-  } 
+  }
 }
 
 const backSpace = document.querySelector('.js-b');
 backSpace.addEventListener('click', () => {
-  if (lastType === 'number') backspaceHandler();
+
+  if (lastAction === 'number') backspaceHandler();
   
 });
 
-function numberInputHandler(number) {
-  document.querySelector('.line-b').textContent = '';
-
-  inputCapture.push(number);
-  displayInput('input', number);
-}
-
-decimalCounter = 0;
+// decimal key
+let decimalCounter = 0;
 
 const decimal = document.getElementById('.');
 decimal.addEventListener('click', () => {
@@ -105,21 +98,7 @@ decimal.addEventListener('click', () => {
   decimalCounter++;
 });
 
-function keypadStyleModifier(element, modifier) {
-  
-  modifier.style.position = 'absolute';
-  modifier.style.zIndex = 10;
-
-  Number(element.id) === 0 
-  ? modifier.style.width = '99%'
-  : modifier.style.width = '9rem';
-
-  modifier.style.height = '9rem';
-  modifier.style.visibility = 'hidden';
-
-  element.appendChild(modifier);
-}
-
+// number keypads
 inputs.forEach( input => {
   
   input.addEventListener( 'click', () => {
@@ -144,6 +123,31 @@ inputs.forEach( input => {
 
 });
 
+// handle number input
+function numberInputHandler(number) {
+  document.querySelector('.line-b').textContent = '';
+
+  inputCapture.push(number);
+  displayInput('input', number);
+}
+
+// style modifier
+function keypadStyleModifier(element, modifier) {
+  
+  modifier.style.position = 'absolute';
+  modifier.style.zIndex = 10;
+
+  Number(element.id) === 0 
+  ? modifier.style.width = '99%'
+  : modifier.style.width = '9rem';
+
+  modifier.style.height = '9rem';
+  modifier.style.visibility = 'hidden';
+
+  element.appendChild(modifier);
+}
+
+// operator keypads
 function operatorHandler(string) {
   string === '=' ? returnResult = true : returnResult = false;
   displayInput('operator', string);
@@ -155,34 +159,18 @@ operators.forEach( operator => {
   });
 });
 
-function enableOutput() {
-  document.querySelector('.line-a').style.visibility = 'hidden';
-  topLiner.style.visibility = 'visible';
-}
-
-function resetCalculator() {
-  inputCapture = [];
-  codeArray = [];
-  lastOperator = 'none';
-  displayOutput.textContent = '';
-
-  topLiner.textContent = '';
-  document.querySelector('.line-b').textContent = 0;
-
-  lastType = '';
-}
-
+// display to calculator screen
 function displayInput(action = 'input', input) {
 
   if (action === 'input') {
 
-    if (initalizer) {
-      topLiner.textContent = '';
+    if (initalise) {
+      topLine.textContent = '';
       displayOutput.textContent = '';
-      initalizer = false;
+      initalise = false;
     }
 
-    if (lastType === 'string') {
+    if (lastAction === 'operator') {
       displayOutput.textContent = '';
     }
 
@@ -192,76 +180,95 @@ function displayInput(action = 'input', input) {
         break;
 
       case 'none':
-        topLiner.textContent = 0;
-        break;  
+        topLine.textContent = 0;
+        break;
     }    
 
     displayOutput.textContent += input;
-    lastType = 'number';
+    lastAction = 'number';
   }
 
   if (action === 'operator') {
-    decimalCounter = 0;
-    if (lastOperator === '=') {
-      lastOperator = input;
-      displayOperator.textContent = input;
-      topLiner.textContent = codeArray[0];
-      topLiner.appendChild(displayOperator); 
+    
+    switch(lastOperator) {
+
+      case '=':
+        lastOperator = input;
+        displayOperator.textContent = input;
+
+        topLine.textContent = codeArray[0];
+        topLine.appendChild(displayOperator);
+        break;
+
+      case 'none':
+        topLine.textContent = '';
+        break;
     }
 
-    if (lastOperator === 'none') {
-      topLiner.textContent = '';
+    topLine.textContent += inputCapture.join("");
+
+    if (lastAction === 'number' || initalise) {
+      displayOperator.textContent = input;
+      topLine.appendChild(displayOperator); 
+
+      initalise = false;
     }
 
     enableOutput();
+    calculateResult();
 
-    topLiner.textContent += inputCapture.join("");
-
-    if (lastType === 'number' || initalizer) {
-      displayOperator.textContent = input;
-      topLiner.appendChild(displayOperator); 
-
-      initalizer = false;
-    }
-
-    displayInput('evaluate', null);
-
+    decimalCounter = 0;
     lastOperator = input;
-
-    inputCapture = [];
-    
-    lastType = 'string';
-  }
-
-  if (action === 'evaluate' && input === null) {
-    
-    if (inputCapture.length > 0) {
-      codeArray.push(Number(inputCapture.join("")));
-      inputCapture = [];      
-    }
-
-    if (codeArray.length > 1) {
-
-      result = operate(lastOperator, codeArray[0], codeArray[1]);
-
-      console.log(
-        `Calculated! 
-        ${codeArray[0]} ${lastOperator} ${codeArray[1]} 
-        = ${result}`);
-
-      displayOutput.textContent = result;
-
-      if (returnResult) {
-        displayOutput.textContent = result;
-        topLiner.style.visibility = 'hidden';
-      }
-
-      codeArray.splice(0,2);
-      codeArray.unshift(result);
-    }       
+    lastAction = 'operator';
   }
 }
 
+// display ongoing expression
+function enableOutput() {
+  document.querySelector('.line-a').style.visibility = 'hidden';
+  topLine.style.visibility = 'visible';
+}
+
+function calculateResult() {
+
+  if (inputCapture.length > 0) {
+    codeArray.push(Number(inputCapture.join("")));
+    inputCapture.length = 0;      
+  }
+
+  if (codeArray.length > 1) {
+
+    result = operate(lastOperator, codeArray[0], codeArray[1]);
+
+    console.log(
+      `Calculated! 
+      ${codeArray[0]} ${lastOperator} ${codeArray[1]} 
+      = ${result}`);
+
+     displayOutput.textContent = result;
+
+    if (returnResult) {
+      displayOutput.textContent = result;
+      topLine.style.visibility = 'hidden';
+    }
+
+    codeArray.splice(0,2);
+    codeArray.unshift(result);
+  }  
+}
+
+function resetCalculator() {
+  codeArray.length = 0;
+  lastAction = 'none';
+  inputCapture.length = 0;
+  lastOperator = 'none';
+
+  topLine.textContent = '';
+  displayOutput.textContent = '';
+  document.querySelector('.line-b').textContent = 0;
+}
+
+// math functions
 function add(numX = 0, numY = 0) {
   return numX + numY;
 }
@@ -275,6 +282,7 @@ function div(numX = 0, numY = 0) {
   return numX / numY;
 }
 
+// calculate
 function operate(operator, numX = 0, numY = 0) {
   let sumUp = 0;
 
@@ -295,8 +303,8 @@ function operate(operator, numX = 0, numY = 0) {
   return sumUp;
 }
 
+// keyboard listeners
 const keyboardInput = document.querySelector('body');
-
 keyboardInput.addEventListener('keydown', (e) => {
 
   if (isNaN(e.key)) {

@@ -105,30 +105,38 @@ decimal.addEventListener('click', () => {
   decimalCounter++;
 });
 
+function keypadStyleModifier(element, modifier) {
+  
+  modifier.style.position = 'absolute';
+  modifier.style.zIndex = 10;
+
+  Number(element.id) === 0 
+  ? modifier.style.width = '99%'
+  : modifier.style.width = '9rem';
+
+  modifier.style.height = '9rem';
+  modifier.style.visibility = 'hidden';
+
+  element.appendChild(modifier);
+}
+
 inputs.forEach( input => {
+  
   input.addEventListener( 'click', () => {
     if (input.id !== '.') numberInputHandler(input.id);
   });
 
   let lastStyle = input.style.background;
 
+  // modifiy key style when pressed
   const keypadDown = input.cloneNode(true);
-  keypadDown.style.position = 'absolute';
-  keypadDown.style.zIndex = 10;
-
-  Number(input.id) === 0 
-  ? keypadDown.style.width = '99%'
-  : keypadDown.style.width = '9rem';
-
-  keypadDown.style.height = '9rem';
-  keypadDown.style.visibility = 'hidden';
-
-  input.appendChild(keypadDown);
+  keypadStyleModifier(input, keypadDown);
 
   input.addEventListener( 'mousedown', () => {
     input.style.background = 'black';
     keypadDown.style.visibility = 'visible';
   });
+
   input.addEventListener( 'mouseup', () => {
     keypadDown.style.visibility = 'hidden';
     input.style.background = lastStyle;

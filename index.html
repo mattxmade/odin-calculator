@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="style.css">
+  <title>Calculator</title>
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <main>
+      <div class="calculator-body">
+
+        <div class="top-row">
+          <div class="calculator-screen">
+            <p class="line-a">0</p>
+            <p class="line-b">0</p>
+            <div class="calc-display">
+              <p class="topline">0<span id="js-operator"></span></p>
+              <p class="botline" id="js-display-output">0
+              </p>
+            </div>
+          </div>
+
+          <div class="operators">
+            <div class="operator plus">
+              <p><i class="fas fa-plus"></i></p>
+              <div class="operator-shader"></div>
+              <div id="+" class="overlay js-op"></div>
+            </div>
+
+            <div class="operator minus">
+              <p><i class="fas fa-minus"></i></p>
+              <div class="operator-shader"></div>
+              <div id="-" class="overlay js-op"></div>
+            </div>
+
+            <div class="operator times">
+              <p><i class="fas fa-times"></i></p>
+              <div class="operator-shader"></div>
+              <div id="*" class="overlay js-op"></div>
+            </div>
+
+            <div class="operator divide">
+              <p><i class="fas fa-divide"></i></p>
+              <div class="operator-shader"></div>
+              <div id="/" class="overlay js-op"></div>
+            </div>
+
+            <div class="operator equals ">
+              <p><i class="fas fa-equals"></i></p>
+              <div class="operator-shader"></div>
+              <div id="=" class="overlay js-op"></div>
+            </div>
+
+            <div class="reset-buttons">
+
+              <div class="operator clear "><p>c</p>
+                <div class="operator-shader"></div>
+                <div id="c" class="overlay js-c"></div>
+              </div>
+
+              <div class="operator backspace">
+                <p><i class="fas fa-angle-left"></i></p>
+                <div class="operator-shader"></div>
+                <div id="b" class="overlay js-b"></div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div id="grid" class="calculator-grid">
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+          <div class="keypad">
+            <div class="keypad-shader"></div>
+          </div>
+        </div>
+        <div class="title"><h1>Power Calculator</h1></div>
+      </div>
+
+    </main>
+  </div>
+  
+</body>
+<script src="keyGenerator.js"></script>
+</html>

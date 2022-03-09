@@ -268,7 +268,6 @@ p {
   border-radius: 0.5rem;
   outline: 1rem double rgba(99, 57, 57, 0.4); 
   box-shadow: 0 0 1rem 0.1rem rgb(0, 0, 0), inset 0 0 1rem 0.1rem rgb(80, 51, 51); 
-  /* background: linear-gradient(darkgray, whitesmoke, grey, whitesmoke, darkgray); */
 }
 
 .keypad {

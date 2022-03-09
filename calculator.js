@@ -69,20 +69,18 @@ clearButton.addEventListener('click', () => {
 });
 
 // backspace
-function backspaceHandler() {
-  if (lastAction === 'number') {
-
-    inputCapture.pop();
-    displayOutput.textContent = inputCapture.join("");
-  }
-}
-
 const backSpace = document.querySelector('.js-b');
+
 backSpace.addEventListener('click', () => {
 
   if (lastAction === 'number') backspaceHandler();
   
 });
+
+function backspaceHandler() {
+  inputCapture.pop();
+  displayOutput.textContent = inputCapture.join("");
+}
 
 // decimal key
 let decimalCounter = 0;
@@ -98,11 +96,28 @@ decimal.addEventListener('click', () => {
   decimalCounter++;
 });
 
+let zeroCounter = 0;
+
+const zeroKey = document.getElementById('0');
+zeroKey.addEventListener('click', () => {
+
+  if (inputCapture[0] !== '0') {
+    numberInputHandler(zeroKey.id);
+  }
+  if (inputCapture[0] === '0' && inputCapture[1] === '.') {
+    numberInputHandler(zeroKey.id);
+  }
+});
+
 // number keypads
 inputs.forEach( input => {
   
   input.addEventListener( 'click', () => {
-    if (input.id !== '.') numberInputHandler(input.id);
+    console.log(input.id);
+    if (input.id !== '.' && input.id !== '0') {
+      numberInputHandler(input.id);
+    }
+      
   });
 
   let lastStyle = input.style.background;
@@ -127,8 +142,11 @@ inputs.forEach( input => {
 function numberInputHandler(number) {
   document.querySelector('.line-b').textContent = '';
 
-  inputCapture.push(number);
-  displayInput('input', number);
+  if (inputCapture.length < 11) {
+    inputCapture.push(number);
+    displayInput('input', number);
+  }
+
 }
 
 // style modifier
@@ -186,6 +204,8 @@ function displayInput(action = 'input', input) {
 
     displayOutput.textContent += input;
     lastAction = 'number';
+
+    scaleFontSize();
   }
 
   if (action === 'operator') {
@@ -217,10 +237,29 @@ function displayInput(action = 'input', input) {
     enableOutput();
     calculateResult();
 
+    zeroCounter = 0
     decimalCounter = 0;
     lastOperator = input;
     lastAction = 'operator';
   }
+}
+
+function scaleFontSize() {
+  const inputLength = displayOutput.textContent.length;
+
+  if (inputLength > 9) {
+
+    const maxWidth = removeUnits(window.getComputedStyle(displayOutput).width);
+    const fontAllocation = (maxWidth / inputLength) + 18;
+    
+    displayOutput.style.fontSize = `${fontAllocation}px`;
+  }
+
+}
+
+function removeUnits(string) {
+  const number = Number(string.slice(0, string.length-2))
+  return number;
 }
 
 // display ongoing expression
@@ -264,7 +303,8 @@ function resetCalculator() {
   lastOperator = 'none';
 
   topLine.textContent = '';
-  displayOutput.textContent = '';
+  displayOutput.textContent = 0;
+  displayOutput.style.fontSize = '60px'
   document.querySelector('.line-b').textContent = 0;
 }
 
@@ -341,3 +381,4 @@ keyboardInput.addEventListener('keydown', (e) => {
    numberInputHandler(e.key);
   }
 });
+

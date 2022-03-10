@@ -46,7 +46,7 @@ function generateKeypads(number) {
 const topLine = document.querySelector('.topline');
 topLine.style.visibility = 'hidden';
 
-// calculator display - result
+// calculator display bottomline - result
 const displayOutput = document.querySelector('.botline');
 const displayOperator = document.getElementById('js-operator');
 

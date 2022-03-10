@@ -71,13 +71,22 @@ p {
   
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   font-size: 2rem;
   font-family: 'Comforter Brush', cursive;
   
   background: rgb(119, 120, 170);
   box-shadow: 0 0 1rem 0.1rem rgb(0, 0, 0), inset 0 0 1rem 0.1rem rgb(80, 51, 51);
+
+  transition: 0.3s;
+
+  overflow: hidden;
+}
+
+.title-cover {
+  height: 50.4rem;
 }
 
 .title h1 {
@@ -87,6 +96,77 @@ p {
   background-clip: text;
   -webkit-background-clip: text;
   background-image: linear-gradient(90deg, var(--fontBorder), var(--fontMain), var(--fontBorder));
+}
+
+.title h2 {
+  font-family: 'Chakra Petch', sans-serif;
+  
+  transition: 0.3s;
+}
+
+.title h2.modify-author,
+i.fab.modifier {
+  padding: 2rem;
+  border-radius: 5rem;
+  background-color: rgb(112, 135, 179);
+  border: 0.5rem double rgb(84, 116, 175);
+  box-shadow: inset 0 0 0.5rem 0.1rem rgb(80, 51, 51);
+}
+
+.title ul {
+  list-style: none;
+}
+
+.title li {
+  float: left;
+  margin: 0 2rem;
+}
+
+.title i.fab {
+  cursor: pointer;
+  font-size: 3rem;
+  transition: 0.3s;
+}
+
+.title i.fab.modifier {
+  font-size: 6rem;
+}
+
+.menu-button {
+  width: 15%;
+  height: 100%;
+
+  right: 0;
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+}
+
+.menu-overlay {
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
+  position: absolute;
+}
+
+.menu-button i.fas {
+  right: 2rem;
+  position: absolute;
+
+  font-size: 2.5rem;
+  color: rgb(151, 213, 224);
+}
+
+.menu-button-modifier {
+  height: 25%;
+  align-self: flex-end;
+
+  bottom: -2.7rem;
 }
 
 .calculator-body {

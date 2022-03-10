@@ -279,7 +279,9 @@ function displayInput(action = 'input', input) {
     topLine.textContent += inputCapture.join("");
 
     if (inputCapture.length === 0) {
-      inputCapture.push(0);
+      if (lastOperator === '+' || lastOperator === '-') {
+        inputCapture.push(0);
+      }
     }
 
     if (lastAction === 'number' || initalise) {

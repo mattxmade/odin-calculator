@@ -42,9 +42,11 @@ function generateKeypads(number) {
   }
 }
 
+// calculator display topline - expression
 const topLine = document.querySelector('.topline');
 topLine.style.visibility = 'hidden';
 
+// calculator display - result
 const displayOutput = document.querySelector('.botline');
 const displayOperator = document.getElementById('js-operator');
 
@@ -60,23 +62,6 @@ let returnResult = false;
 
 let lastAction;
 let lastOperator = 'none';
-
-
-// // clear calculator
-// const clearButton = document.querySelector('.js-c');
-//   clearButton.addEventListener('click', () => {
-
-//     resetCalculator();
-//   });
-
-// // backspace
-// const backSpace = document.querySelector('.js-b');
-
-// backSpace.addEventListener('click', () => {
-
-//   if (lastAction === 'number') backspaceHandler();
-  
-// });
 
 function backspaceHandler() {
   inputCapture.pop();
@@ -148,7 +133,7 @@ zeroKey.addEventListener('click', () => {
 inputs.forEach( input => {
   
   input.addEventListener( 'click', () => {
-    console.log(input.id);
+
     if (input.id !== '.' && input.id !== '0') {
       numberInputHandler(input.id);
     }
@@ -278,6 +263,7 @@ function displayInput(action = 'input', input) {
 
     topLine.textContent += inputCapture.join("");
 
+    // inputCapure always empty after result is returned
     if (inputCapture.length === 0) {
       if (lastOperator === '+' || lastOperator === '-') {
         inputCapture.push(0);

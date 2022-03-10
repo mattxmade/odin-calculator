@@ -61,26 +61,61 @@ let returnResult = false;
 let lastAction;
 let lastOperator = 'none';
 
-// clear calculator
-const clearButton = document.querySelector('.js-c');
 
-clearButton.addEventListener('click', () => {
-  resetCalculator();
-});
+// // clear calculator
+// const clearButton = document.querySelector('.js-c');
+//   clearButton.addEventListener('click', () => {
 
-// backspace
-const backSpace = document.querySelector('.js-b');
+//     resetCalculator();
+//   });
 
-backSpace.addEventListener('click', () => {
+// // backspace
+// const backSpace = document.querySelector('.js-b');
 
-  if (lastAction === 'number') backspaceHandler();
+// backSpace.addEventListener('click', () => {
+
+//   if (lastAction === 'number') backspaceHandler();
   
-});
+// });
 
 function backspaceHandler() {
   inputCapture.pop();
   displayOutput.textContent = inputCapture.join("");
 }
+
+const resetClearBtns = document.querySelectorAll('.js-btn');
+resetClearBtns.forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.id === 'c') {
+      resetCalculator();
+    }
+    if (button.id === 'b' && lastAction === 'number') {
+      backspaceHandler();
+    } 
+  });
+
+  styleButtonOnClick(button);
+});
+
+function styleButtonOnClick(element) {
+
+  let lastStyle = element.style.background;
+
+  // modifiy key style when pressed
+  const keypadDown = element.cloneNode(true);
+  keypadStyleModifier(element, keypadDown, '4rem');
+
+  element.addEventListener( 'mousedown', () => {
+    element.style.background = 'black';
+    keypadDown.style.visibility = 'visible';
+  });
+
+  element.addEventListener( 'mouseup', () => {
+    keypadDown.style.visibility = 'hidden';
+    element.style.background = lastStyle;
+  });
+}
+
 
 // decimal key
 let decimalCounter = 0;
@@ -124,7 +159,7 @@ inputs.forEach( input => {
 
   // modifiy key style when pressed
   const keypadDown = input.cloneNode(true);
-  keypadStyleModifier(input, keypadDown);
+  keypadStyleModifier(input, keypadDown, '9rem');
 
   input.addEventListener( 'mousedown', () => {
     input.style.background = 'black';
@@ -146,20 +181,19 @@ function numberInputHandler(number) {
     inputCapture.push(number);
     displayInput('input', number);
   }
-
 }
 
 // style modifier
-function keypadStyleModifier(element, modifier) {
+function keypadStyleModifier(element, modifier, size) {
   
   modifier.style.position = 'absolute';
   modifier.style.zIndex = 10;
 
   Number(element.id) === 0 
   ? modifier.style.width = '99%'
-  : modifier.style.width = '9rem';
+  : modifier.style.width = size;
 
-  modifier.style.height = '9rem';
+  modifier.style.height = size;
   modifier.style.visibility = 'hidden';
 
   element.appendChild(modifier);
@@ -175,6 +209,23 @@ operators.forEach( operator => {
   operator.addEventListener( 'click', () => {
     operatorHandler(operator.id);
   });
+
+  let lastStyle = operator.style.background;
+
+  // modifiy key style when pressed
+  const keypadDown = operator.cloneNode(true);
+  keypadStyleModifier(operator, keypadDown, '9rem');
+
+  operator.addEventListener( 'mousedown', () => {
+    operator.style.background = 'black';
+    keypadDown.style.visibility = 'visible';
+  });
+
+  operator.addEventListener( 'mouseup', () => {
+    keypadDown.style.visibility = 'hidden';
+    operator.style.background = lastStyle;
+  });
+
 });
 
 // display to calculator screen
@@ -226,6 +277,10 @@ function displayInput(action = 'input', input) {
     }
 
     topLine.textContent += inputCapture.join("");
+
+    if (inputCapture.length === 0) {
+      inputCapture.push(0);
+    }
 
     if (lastAction === 'number' || initalise) {
       displayOperator.textContent = input;
@@ -302,8 +357,10 @@ function resetCalculator() {
   inputCapture.length = 0;
   lastOperator = 'none';
 
+  initalise = true;
+
   topLine.textContent = '';
-  displayOutput.textContent = 0;
+  displayOutput.textContent = '';
   displayOutput.style.fontSize = '60px'
   document.querySelector('.line-b').textContent = 0;
 }
@@ -382,3 +439,21 @@ keyboardInput.addEventListener('keydown', (e) => {
   }
 });
 
+const menuBtn = document.querySelector('.menu-overlay');
+
+menuBtn.addEventListener('click', (e) => {
+  const calcCover = document.querySelector('.title');
+  calcCover.classList.toggle('title-cover');
+
+  const menuBtnParent = document.querySelector('.menu-button');
+  menuBtnParent.classList.toggle('menu-button-modifier');
+
+  const fabIcons = document.querySelectorAll('.fab');
+  fabIcons.forEach(icon => {
+    icon.classList.toggle('modifier');
+  });
+
+  const authorName = document.querySelector('.author');
+  authorName.classList.toggle('modify-author');
+
+});
